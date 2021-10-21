@@ -40,7 +40,7 @@ contract Greeter {
         ownerToLuckyNumber[msg.sender] = _luckyNumber;
     }
 
-    modifier matchPreviousLuckyNumber(uint256 _luckyNumber) {
+    modifier shouldMatchPreviousLuckyNumber(uint256 _luckyNumber) {
         require(
             ownerToLuckyNumber[msg.sender] == _luckyNumber,
             "Not your previous lucky number."
@@ -48,9 +48,9 @@ contract Greeter {
         _;
     }
 
-    function setLuckyNumber(uint256 _luckyNumber, uint256 _newLuckyNumber)
+    function updateLuckyNumber(uint256 _luckyNumber, uint256 _newLuckyNumber)
         external
-        matchPreviousLuckyNumber(_luckyNumber)
+        shouldMatchPreviousLuckyNumber(_luckyNumber)
     {
         ownerToLuckyNumber[msg.sender] = _newLuckyNumber;
     }

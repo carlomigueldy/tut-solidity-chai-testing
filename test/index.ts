@@ -54,14 +54,26 @@ describe("Greeter", function () {
         "You already have a lucky number."
       );
     });
+
+    it("should retrieve 66 when recently given lucky number is 66", async () => {
+      await contract.deployed();
+
+      await contract.saveLuckyNumber(66);
+      const storedLuckyNumber = await contract.getMyLuckyNumber();
+
+      expect(storedLuckyNumber).to.be.not.undefined;
+      expect(storedLuckyNumber).to.be.not.null;
+      expect(storedLuckyNumber).to.be.not.equal(0);
+      expect(storedLuckyNumber).to.be.equal(66);
+    });
   });
 
-  describe("setLuckyNumber", () => {
+  describe("updateLuckyNumber", () => {
     it("should revert with message '', when the given lucky number does not match with their existing lucky number", async () => {
       await contract.deployed();
       await contract.saveLuckyNumber(6);
 
-      await expect(contract.setLuckyNumber(8, 99)).to.be.revertedWith(
+      await expect(contract.updateLuckyNumber(8, 99)).to.be.revertedWith(
         "Not your previous lucky number."
       );
     });
@@ -70,14 +82,12 @@ describe("Greeter", function () {
       await contract.deployed();
       await contract.saveLuckyNumber(2);
 
+      await contract.updateLuckyNumber(2, 22);
       const newLuckyNumber = await contract.getMyLuckyNumber();
 
-      await expect(contract.setLuckyNumber(2, 22)).to.be.not.revertedWith(
-        "Not your previous lucky number."
-      );
       expect(newLuckyNumber).to.be.not.undefined;
       expect(newLuckyNumber).to.be.not.null;
-      expect(newLuckyNumber.toNumber()).to.be.equal(2);
+      expect(newLuckyNumber.toNumber()).to.be.equal(22);
     });
   });
 });
